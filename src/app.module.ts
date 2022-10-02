@@ -7,7 +7,10 @@ import { SyncsModule } from './syncs/syncs.module';
   imports: [
     OddsModule,
     SyncsModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/rasbets'),
+    MongooseModule.forRoot(
+      process.env.MONGO_CONNECTION_STRING ||
+        'mongodb://localhost:27017/rasbets',
+    ),
   ],
 })
 export class AppModule {}
