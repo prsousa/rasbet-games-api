@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { SyncsService } from './syncs.service';
 import { SyncsController } from './syncs.controller';
-import { OddsModule } from 'src/odds/odds.module';
+import { GamesModule } from 'src/games/games.module';
 
 @Module({
-  imports: [OddsModule],
+  imports: [GamesModule],
   controllers: [SyncsController],
   providers: [SyncsService],
   exports: [SyncsService],

@@ -1,17 +1,13 @@
 import { Controller, Post } from '@nestjs/common';
-import { SyncsService } from './syncs.service';
 import axios from 'axios';
 
-import { CreateOddDto } from 'src/odds/dto/create-odd.dto';
-import { OddsService } from 'src/odds/odds.service';
-import { OddEntity } from 'src/odds/entities/odd.entity';
+import { CreateGameDto } from 'src/games/dto/create-game.dto';
+import { GamesService } from 'src/games/games.service';
+import { GameEntity } from 'src/games/entities/game.entity';
 
 @Controller('syncs')
 export class SyncsController {
-  constructor(
-    private readonly syncsService: SyncsService,
-    private readonly oddsService: OddsService,
-  ) {}
+  constructor(private readonly gamesService: GamesService) {}
 
   @Post()
   async create() {
@@ -25,35 +21,10 @@ export class SyncsController {
       },
     );
 
-    const odds: [CreateOddDto] = data.map(CreateOddDto.fromJSON);
-    const upsertedOdds = await this.oddsService.upsertMany(odds);
-    return { odds: upsertedOdds.map((odd) => new OddEntity(odd.toObject())) };
+    const games: [CreateGameDto] = data.map(CreateGameDto.fromJSON);
+    const upsertedGames = await this.gamesService.upsertMany(games);
+    return {
+      games: upsertedGames.map((game) => new GameEntity(game.toObject())),
+    };
   }
 }
-
-// class Outcome {
-//   @Prop()
-//   name: string;
-
-//   @Prop()
-//   price: number;
-// }
-
-// class Market {
-//   @Prop()
-//   key: string;
-
-//   @Prop()
-//   outcomes: Outcome;
-// }
-
-// class Bookmaker {
-//   @Prop()
-//   key: string;
-
-//   @Prop()
-//   lastUpdate: Date;
-
-//   @Prop()
-//   markets: [Market];
-// }

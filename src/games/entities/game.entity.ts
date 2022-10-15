@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 
-export class OddEntity {
+export class GameEntity {
   @Exclude()
   _id: string;
 
@@ -13,13 +13,18 @@ export class OddEntity {
   @Exclude()
   updatedAt: Date;
 
+  @Exclude()
+  isVisible: boolean;
+
   id: string;
   commenceTime: Date;
   homeTeam: string;
   awayTeam: string;
-  bookmakers: any;
+  completed: boolean;
+  scores?: string;
+  bookmakers: any[];
 
-  constructor(partial: Partial<OddEntity>) {
+  constructor(partial: Partial<GameEntity>) {
     Object.assign(this, partial);
   }
 }

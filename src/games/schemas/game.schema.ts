@@ -29,7 +29,7 @@ export class Bookmaker {
 }
 
 @Schema({ timestamps: true })
-export class Odd extends Document {
+export class Game extends Document {
   @Prop()
   id: string;
 
@@ -43,7 +43,16 @@ export class Odd extends Document {
   awayTeam: string;
 
   @Prop()
+  completed: boolean;
+
+  @Prop()
+  scores?: string;
+
+  @Prop()
   bookmakers: [Bookmaker];
+
+  @Prop()
+  isVisible: boolean = true;
 }
 
-export const OddSchema = SchemaFactory.createForClass(Odd);
+export const GameSchema = SchemaFactory.createForClass(Game);

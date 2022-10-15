@@ -36,20 +36,24 @@ export class CreateBookmakerDto {
   }
 }
 
-export class CreateOddDto {
+export class CreateGameDto {
   id: string;
   commenceTime: string;
   homeTeam: string;
   awayTeam: string;
   bookmakers: [CreateBookmakerDto];
+  completed: boolean;
+  scores?: string;
 
-  static fromJSON(data: any): CreateOddDto {
+  static fromJSON(data: any): CreateGameDto {
     return {
       id: data.id,
       commenceTime: data.commence_time,
       homeTeam: data.home_team,
       awayTeam: data.away_team,
       bookmakers: data.bookmakers.map(CreateBookmakerDto.fromJSON),
+      completed: data.completed,
+      scores: data.scores,
     };
   }
 }
