@@ -1,0 +1,110 @@
+openapi: '3.0.3'
+info:
+  title: RASBET Games
+  version: '0.0.1'
+  description: |-
+    RASBET Games API server OpenAPI 3.0 specification.
+    
+    This server is part of work assignment of the "Requisitos e Arquiteturas de Software" curricular unit.
+    All projects __must__ use it as a complementary external data source.
+    
+    *Note that the server runs over http, so OpenAPI online clients using https may get the requests blocked by the browser.*
+  contact:
+    email: d7157@di.uminho.pt
+servers:
+  - url: http://ucras.di.uminho.pt/v1
+paths:
+  /games/:
+    get:
+      tags:
+        - Game
+      description: Lists the upcoming games and their respective odds, practiced by some bookmakers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: A list of upcoming games
+                items:
+                  $ref: '#/components/schemas/Game'
+
+components:
+  schemas:
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Game's unique identifier
+        homeTeam:
+          type: string
+          example: Braga
+          description: Team playing home
+        awayTeam:
+          type: string
+          example: Gil Vicente
+          description: Team playing away
+        commenceTime:
+          type: string
+          format: date-time
+          example: "2022-10-09T19:30:00.000Z"
+          description: Time the game is scheduled
+        completed:
+          type: boolean
+          example: false
+          description: Indicates whether the game has already been marked as finished
+        scores:
+          type: string
+          nullable: true
+          description: The score of the game
+        bookmakers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bookmaker'
+          description: Bookmakers with odds information
+    Bookmaker:
+      type: object
+      properties:
+        key:
+          type: string
+          example: betfair
+          description: Identifying name
+        lastUpdate:
+          type: string
+          format: date-time
+          example: "2022-10-06T08:30:01.346Z"
+          description: Timestamp of when the bookmaker's odds were last captured.
+        markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Market'
+          description: List of odds markets
+  
+    Market:
+      type: object
+      properties:
+        key:
+          type: string
+          example: h2h
+          enum:
+            - h2h
+          description: Name of the odds market
+        outcomes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Outcome'
+          description: List of supported outcomes
+
+    Outcome:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Draw
+          description: A label of the outcome. For totals markets, this can be 'Over' or 'Under'. For all other markets, this will be the name of the team or participant, or 'Draw'
+        price:
+          type: number
+          example: 3.25
+          description: The odd of the outcome
