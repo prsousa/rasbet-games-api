@@ -50,9 +50,6 @@ export class Game extends Document {
 
   @Prop()
   bookmakers: [Bookmaker];
-
-  @Prop()
-  isVisible: boolean = true;
 }
 
 export const GameSchema = SchemaFactory.createForClass(Game);

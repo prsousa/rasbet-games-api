@@ -3,8 +3,8 @@ import { Model } from 'mongoose';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 
 import { Game } from './schemas/game.schema';
-import { CreateGameDto } from './dto/create-game.dto';
 import mongoose from 'mongoose';
+import { UpsertGameDto } from './dto/upsert-game.dto';
 
 @Injectable()
 export class GamesService {
@@ -14,19 +14,17 @@ export class GamesService {
     @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
 
-  async upsertMany(createGameDtos: [CreateGameDto]): Promise<Game[]> {
+  async upsertMany(upsertGameDtos: UpsertGameDto[]): Promise<Game[]> {
     const res: Game[] = [];
 
     const session = await this.connection.startSession();
     session.startTransaction();
 
-    await this.gameModel.updateMany({}, { isVisible: false });
-
     try {
-      for (const createGameDto of createGameDtos) {
+      for (const upsertGameDto of upsertGameDtos) {
         let game = await this.gameModel.findOneAndUpdate(
-          { id: createGameDto.id },
-          { ...createGameDto, isVisible: true },
+          { id: upsertGameDto.id },
+          upsertGameDto,
           {
             new: true,
             upsert: true,
@@ -48,8 +46,13 @@ export class GamesService {
   }
 
   async findAllVisible(): Promise<Game[]> {
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
     return this.gameModel.find({
-      isVisible: true,
+      commenceTime: {
+        $gte: threeDaysAgo,
+      },
     });
   }
 

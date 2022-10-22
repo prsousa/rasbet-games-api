@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
   title: RASBET Games
-  version: '0.0.1'
+  version: '0.1.0'
   description: |-
     RASBET Games API server OpenAPI 3.0 specification.
     

@@ -1,3 +1,5 @@
+import { UpsertGameDto } from './upsert-game.dto';
+
 export class CreateOutcomeDto {
   name: string;
   price: number;
@@ -36,14 +38,11 @@ export class CreateBookmakerDto {
   }
 }
 
-export class CreateGameDto {
-  id: string;
+export class CreateGameDto extends UpsertGameDto {
   commenceTime: string;
   homeTeam: string;
   awayTeam: string;
   bookmakers: [CreateBookmakerDto];
-  completed: boolean;
-  scores?: string;
 
   static fromJSON(data: any): CreateGameDto {
     return {
@@ -52,8 +51,6 @@ export class CreateGameDto {
       homeTeam: data.home_team,
       awayTeam: data.away_team,
       bookmakers: data.bookmakers.map(CreateBookmakerDto.fromJSON),
-      completed: data.completed,
-      scores: data.scores,
     };
   }
 }
