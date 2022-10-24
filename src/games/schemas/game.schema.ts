@@ -42,10 +42,10 @@ export class Game extends Document {
   @Prop()
   awayTeam: string;
 
-  @Prop()
+  @Prop({ default: false })
   completed: boolean;
 
-  @Prop()
+  @Prop({ default: null })
   scores?: string;
 
   @Prop()
