@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
   title: RASBET Games
-  version: '0.1.1'
+  version: '0.2.0'
   description: |-
     RASBET Games API server OpenAPI 3.0 specification.
     
@@ -29,6 +29,42 @@ paths:
                 description: A list of games
                 items:
                   $ref: '#/components/schemas/Game'
+  /games/{gameId}/:
+    get:
+      tags:
+        - Game
+      description: Returns a single game given its Id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: A game
+                $ref: '#/components/schemas/Game'
+        '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: integer
+                    example: 404
+                    description: HTTP status code
+                  message:
+                    type: string
+                    example: 'Not Found'
+                    description: Error description
+      parameters:
+        - in: path
+          name: gameId
+          required: true
+          example: 'e8ab481bcf9d2917419bfb34ac0d0da7'
+          schema:
+            type: string
+          description: The game ID
 
 components:
   schemas:

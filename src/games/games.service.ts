@@ -57,6 +57,8 @@ export class GamesService {
   }
 
   async findOne(id: string): Promise<Game> {
-    return this.gameModel.findById(id);
+    return this.gameModel.findOne({
+      id,
+    });
   }
 }
